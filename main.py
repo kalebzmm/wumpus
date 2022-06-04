@@ -17,6 +17,7 @@ def readmap():
     with open('./map.txt') as file:
         lines = file.readlines()
         return [list(line.rstrip()) for line in lines]
+    lines.close()
 
 
 def isAgent(e):
@@ -24,7 +25,7 @@ def isAgent(e):
 
 
 def isBreeze(e):
-    return e == 'B'
+    return e == 'B'   
 
 
 def isPit(e):
@@ -70,6 +71,7 @@ def valid(map, start, moves):
         elif isWall(map[y][x]):
             return False
         elif isPit(map[y][x]):
+            return False
             # print('PIT')
             ''
         elif isBreeze(map[y][x]):
@@ -83,6 +85,23 @@ def valid(map, start, moves):
             ''
 
     return True
+
+
+def adjacent(location1, location2):
+
+
+        x1 = location1.x
+        x2 = location2.x
+        y1 = location1.y
+        y2 = location2.y
+
+        if (x1 == x2) and (y1 == (y2 - 1)) or \
+           (x1 == x2) and (y1 == (y2 + 1)) or \
+           (x1 == (x2 - 1)) and (y1 == y2) or \
+           (x1 == (x2 + 1)) and (y1 == y2):
+            return True
+
+        return False
 
 
 def findEnd(map, start, moves):
