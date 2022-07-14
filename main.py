@@ -1,40 +1,56 @@
 import queue
 import os
 import time
+import matrizGraf
 
-clear = lambda: os.system('cls')
+
+
+def clear(): return os.system('cls')
+
+
 cheeses = {}
+
 
 def pathPrettyPrint(path):
     return path.replace('U', '↑').replace('R', '→').replace('D', '↓').replace('L', '←')
 
+
 def readmap():
-	with open('./map.txt') as file:
-		lines = file.readlines()
-		return [list(line.rstrip()) for line in lines]
+    with open('./map.txt') as file:
+        lines = file.readlines()
+        return [list(line.rstrip()) for line in lines]
+    lines.close()
+
 
 def isAgent(e):
     return e == 'A'
 
+
 def isBreeze(e):
-    return e == 'B'
+    return e == 'B'   
+
 
 def isPit(e):
     return e == 'P'
 
+
 def isStench(e):
     return e == 'S'
+
 
 def isGold(e):
     return e == 'G'
 
+
 def isWall(e):
     return e == '#'
 
+
 def findStart(map):
     for x, pos in enumerate(map):
-        if isAgent(pos[0]):
+        if isAgent(pos[1]):
             return x
+
 
 def valid(map, start, moves):
     x = 0
@@ -57,15 +73,38 @@ def valid(map, start, moves):
         elif isWall(map[y][x]):
             return False
         elif isPit(map[y][x]):
-            print('PIT')
+            return False
+            # print('PIT')
+            ''
         elif isBreeze(map[y][x]):
-            print('BREEZE')
+            # print('BREEZE')
+            ''
         elif isStench(map[y][x]):
-            print('STENCH')
+            # print('STENCH')
+            ''
         elif isGold(map[y][x]):
-            print('GOLD')
+            # print('GOLD')
+            ''
 
     return True
+
+
+def adjacent(location1, location2):
+
+
+        x1 = location1.x
+        x2 = location2.x
+        y1 = location1.y
+        y2 = location2.y
+
+        if (x1 == x2) and (y1 == (y2 - 1)) or \
+           (x1 == x2) and (y1 == (y2 + 1)) or \
+           (x1 == (x2 - 1)) and (y1 == y2) or \
+           (x1 == (x2 + 1)) and (y1 == y2):
+            return True
+
+        return False
+
 
 def findEnd(map, start, moves):
     x = 0
@@ -90,6 +129,7 @@ def findEnd(map, start, moves):
     #     return True
 
     return False
+
 
 def printMap(map, start, path=""):
     x = 0
@@ -118,24 +158,30 @@ def printMap(map, start, path=""):
                 print("\033[91m" + col + " \033[0m", end="")
         print()
 
+
 def validMoves(map, lastMove):
     moves = ["L", "R", "U", "D"]
     if(not lastMove):
         return moves
     moves.remove(lastMove)
     moves.insert(0, lastMove)
-    if(lastMove == 'R'): moves.remove('L')
-    if(lastMove == 'L'): moves.remove('R')
-    if(lastMove == 'U'): moves.remove('D')
-    if(lastMove == 'D'): moves.remove('U')
+    if(lastMove == 'R'):
+        moves.remove('L')
+    if(lastMove == 'L'):
+        moves.remove('R')
+    if(lastMove == 'U'):
+        moves.remove('D')
+    if(lastMove == 'D'):
+        moves.remove('U')
     return moves
+
 
 nums = queue.Queue()
 add = ""
 nums.put(add)
 map = readmap()
 start = findStart(map)
-lastPos = (start, 0) # y, x
+lastPos = (start, 0)  # y, x
 lastMove = ''
 start_time = time.time()
 
